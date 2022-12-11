@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'nishan.dart';
-import 'service.dart';
-import 'model.dart';
 import 'package:http/http.dart' as http;
 
+import 'model.dart';
+import 'service.dart';
+
 class app extends StatefulWidget {
-  
-  const app({super.key});
+  final int id;
+  const app({super.key, required this.id});
 
   @override
   State<app> createState() => _appState();
@@ -16,27 +16,31 @@ data() async {
   nis = await service().getpost();
 }
 
+int movieId = 560;
+
 Nishan nis = Nishan();
 
- Future<Nishan>getpost() async{
-    var client =http.Client();
-    var uri =Uri.parse('https://api.themoviedb.org/3/movie/550?api_key=8be08cce18954a0aecc4f2c57f7d992b');
-    var responce=await client.get(uri);
-     var json=responce.body;
-    if(responce.statusCode==200){
-     
-      return nishanFromJson(json);
-    }else {
+Future<Nishan> getpost(int movieId) async {
+  var client = http.Client();
+  var uri = Uri.parse(
+      'https://api.themoviedb.org/3/movie/505642?api_key=8be08cce18954a0aecc4f2c57f7d992b');
+  // https://api.themoviedb.org/3/movie/550?api_key=8be08cce18954a0aecc4f2c57f7d992b&language=en-US
+  var responce = await client.get(uri);
+  var json = responce.body;
+  if (responce.statusCode == 200) {
+    print('api responce $json');
     return nishanFromJson(json);
-    }
+  } else {
+    return nishanFromJson(json);
   }
+}
 
 class _appState extends State<app> {
   @override
   initState() {
     data();
-    
-        getpost(); 
+
+    // getpost(movieId);
     super
         .initState(); //  this is the material super constructor for init state to link your instance initState to the global initState context
   }
@@ -45,10 +49,10 @@ class _appState extends State<app> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color.fromARGB(255, 48, 14, 2),
       appBar: AppBar(
         backgroundColor: Colors.black54,
-        title: Text(
+        title: const Text(
           'WorldFree4u',
           style: TextStyle(
               color: Colors.orange, fontSize: 15, fontWeight: FontWeight.bold),
@@ -58,7 +62,7 @@ class _appState extends State<app> {
             children: [
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'HOME',
                   style: TextStyle(
                       fontSize: 6,
@@ -66,12 +70,12 @@ class _appState extends State<app> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 2,
               ),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'TRENDING',
                   style: TextStyle(
                       fontSize: 6,
@@ -79,12 +83,12 @@ class _appState extends State<app> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 2,
               ),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   'BROWSE',
                   style: TextStyle(
                       fontSize: 6,
@@ -92,7 +96,7 @@ class _appState extends State<app> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 2,
               ),
 
@@ -186,60 +190,227 @@ class _appState extends State<app> {
           //   },),
           // ),
           FutureBuilder<Nishan>(
-            future: getpost(),
+            future: getpost(widget.id),
             builder: (context, snapshot) {
-              
-             
               if (snapshot.hasData) {
                 var nis = snapshot.data;
-                 
+
                 if (nis != null) {
-                  print( 'check ${nis.adult.toString()}');
-                // return  SizedBox(
+                  print('check ${nis.adult.toString()}');
+                  // return  SizedBox(
 
-                //   height: 300,
-                //   child: GridView.builder(
-                //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                //           crossAxisCount: 2),
-                //       itemCount: nis.genres!.length,
-                //       itemBuilder: (context, index) {
-                //         return Padding(
-                //           padding: const EdgeInsets.all(10.0),
-                //           child: InkWell(
-                //             onTap: () {
-                //               Navigator.push(
-                //                 context,
-                //                 MaterialPageRoute(
-                //                   builder: (context) => nishan(),
-                //                 ),
-                //               );
-                //             },
-                //             child: Container(
-                //               decoration: BoxDecoration(
-                //                 // image: DecorationImage(
-                //                 // image: NetworkImage('${nis.homepage}${nis.posterPath}'),
-                //                 //   fit: BoxFit.cover,
-                //                 // ),
-                //                 borderRadius: BorderRadius.all(
-                //                   Radius.circular(20.0),
-                //                 ),
-                //               ),
-                //               child: Text(nis.genres![index].name.toString(),
-                //                   style: TextStyle(color: Colors.amber)),
-                //             ),
-                //           ),
-                //         );
-                //       },
-                //     ),
-                // );
+                  //   height: 300,
+                  //   child: GridView.builder(
+                  //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  //           crossAxisCount: 2),
+                  //       itemCount: nis.genres!.length,
+                  //       itemBuilder: (context, index) {
+                  //         return Padding(
+                  //           padding: const EdgeInsets.all(10.0),
+                  //           child: InkWell(
+                  //             onTap: () {
+                  //               Navigator.push(
+                  //                 context,
+                  //                 MaterialPageRoute(
+                  //                   builder: (context) => nishan(),
+                  //                 ),
+                  //               );
+                  //             },
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 // image: DecorationImage(
+                  //                 // image: NetworkImage('${nis.homepage}${nis.posterPath}'),
+                  //                 //   fit: BoxFit.cover,
+                  //                 // ),
+                  //                 borderRadius: BorderRadius.all(
+                  //                   Radius.circular(20.0),
+                  //                 ),
+                  //               ),
+                  //               child: Text(nis.genres![index].name.toString(),
+                  //                   style: TextStyle(color: Colors.amber)),
+                  //             ),
+                  //           ),
+                  //         );
+                  //       },
+                  //     ),
+                  // );
 
-                return  Column(
-                  children: [
-                    Container( child: Text(nis.originalTitle.toString(),
-                                      style: TextStyle(color: Colors.amber)),),
-                                      
-                  ],
-                ) ; 
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          height: 250,
+                          width: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            color: const Color(0xff7c94b6),
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                  'https://image.tmdb.org/t/p/w600_and_h900_bestv2${nis.backdropPath}'),
+                              fit: BoxFit.fill,
+                            ),
+                            border: Border.all(width: 3, color: Colors.orange),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(20.0),
+                                child: Container(
+                                  height: 150,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        width: 3, color: Colors.orange),
+                                    borderRadius: BorderRadius.circular(20),
+                                    image: DecorationImage(
+                                        image: NetworkImage(
+                                            "https://image.tmdb.org/t/p/w600_and_h900_bestv2${nis.posterPath}"),
+                                        fit: BoxFit.fill),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Center(
+                          child: Text(
+                        nis.title.toString(),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                      Center(
+                          child: Text(
+                        nis.releaseDate.toString(),
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'rating: ${nis.voteAverage.toString()}',
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            width: 40,
+                          ),
+                          Container(
+                            height: 40,
+                            width: 2,
+                            decoration: BoxDecoration(
+                              color: Colors.black,
+                              border: Border.all(width: 3, color: Colors.black),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            child: Row(
+                              children: const [
+                                Icon(
+                                  Icons.play_arrow,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                                Text(
+                                  'Play Trailer',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 30,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Colors.brown[900],
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              nis.releaseDate.toString(),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 40,
+                              child: ListView.separated(
+                                separatorBuilder: (context, index) {
+                                  return const VerticalDivider(
+                                    color: Colors.white,
+                                  );
+                                },
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemCount: nis.genres?.length ?? 1,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      nis.genres?[index].name.toString() ??
+                                          'no genere found',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${nis.tagline}',
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      const Text(
+                        'Overeview',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        nis.overview.toString(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ],
+                  );
                 }
               }
 

@@ -14,7 +14,7 @@ class Nishan {
       this. belongsToCollection,
       this. budget,
       this. genres,
-      this. homepage,
+      this. homepage ="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1501DX.img?w=800&h=415&q=60&m=2&f=jpg",
       this. id,
       this. imdbId,
       this. originalLanguage,
@@ -41,7 +41,7 @@ class Nishan {
   dynamic belongsToCollection;
   int? budget;
   List<Genre>? genres;
-  String? homepage;
+  String homepage;
   int? id;
   String? imdbId;
   String? originalLanguage;
@@ -221,4 +221,3 @@ class SpokenLanguage {
         "name": name,
       };
 }
-Nishan nishanData = Nishan();

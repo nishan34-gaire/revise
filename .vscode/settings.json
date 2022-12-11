@@ -1,0 +1,41 @@
+{
+    "[dart]": {
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll": true,
+        "source.addMissingRequired": true,
+    },
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [],
+    "editor.selectionHighlight": true,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": true,
+    "editor.quickSuggestions": {
+        "comments": "on",
+        "strings": "on",
+        "other": "on"
+    },
+    "editor.suggestOnTriggerCharacters": true
+},
+"editor.guides.bracketPairs": "active",
+"files.autoSave": "afterDelay",
+"editor.bracketPairColorization.enabled": true,
+"security.workspace.trust.untrustedFiles": "open",
+"terminal.integrated.defaultProfile.windows": "Command Prompt",
+"enableTelemetry": false,
+"bracket-pair-colorizer-2.depreciation-notice": false,
+"dart.showInspectorNotificationsForWidgetErrors": false,
+"github.copilot.enable": {
+    "*": true,
+    "yaml": false,
+    "plaintext": false,
+    "markdown": false,
+    "dart": false
+},
+"codiga.api.token": "0000-0000-cc9ec216-16ef-4234-8074-dcc68bdf45b3",
+"window.zoomLevel": 0,
+}
+
