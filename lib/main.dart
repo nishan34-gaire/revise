@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie/page.dart';
+import 'package:movie/screens/page.dart';
 
 void main() {
   runApp(MaterialApp(

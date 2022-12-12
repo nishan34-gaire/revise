@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:movie/model/model.dart';
 
-import 'model.dart';
+
 import 'service.dart';
 
 class app extends StatefulWidget {
@@ -23,8 +24,8 @@ Nishan nis = Nishan();
 Future<Nishan> getpost(int movieId) async {
   var client = http.Client();
   var uri = Uri.parse(
-      'https://api.themoviedb.org/3/movie/505642?api_key=8be08cce18954a0aecc4f2c57f7d992b');
-  // https://api.themoviedb.org/3/movie/550?api_key=8be08cce18954a0aecc4f2c57f7d992b&language=en-US
+      'https://api.themoviedb.org/3/movie/$movieId?api_key=8be08cce18954a0aecc4f2c57f7d992b');
+
   var responce = await client.get(uri);
   var json = responce.body;
   if (responce.statusCode == 200) {
@@ -385,21 +386,27 @@ class _appState extends State<app> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            '${nis.tagline}',
-                            style: const TextStyle(color: Colors.white),
+                      Container(
+                        color: Colors.brown[400],
+                        height: 50,
+                        child: Text(
+                          '${nis.tagline}',
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 4,
+                          style: const TextStyle(
+                            fontSize: 10,
+                            fontFamily: 'Roboto',
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
-                        ],
+                        ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       const Text(
                         'Overeview',
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
                       const SizedBox(
