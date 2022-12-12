@@ -116,7 +116,8 @@ class _myappState extends State<myapp> {
                       if (snapshot.hasData) {
                         var data = snapshot.data;
                         print('$data');
-                        return Container(
+                        return SizedBox(
+                          height: 800,
                           child: GridView.builder(
                             shrinkWrap: true,
                             itemCount: data!.results!.length,
@@ -130,33 +131,41 @@ class _myappState extends State<myapp> {
                                 elevation: 4,
                                 shadowColor: Colors.red,
                                 color: const Color.fromARGB(255, 48, 14, 2),
-                                child: ElevatedButton(
-                                  onPressed: (() {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              app(id: data.results![index].id),
-                                        ));
-                                  }),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                      const Color.fromARGB(255, 48, 14, 2),
+                                child: SizedBox(
+                                  height: 500,
+                                  child: ElevatedButton(
+                                    onPressed: (() {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => app(
+                                                id: data.results![index].id),
+                                          ));
+                                    }),
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all(
+                                        const Color.fromARGB(255, 48, 14, 2),
+                                      ),
                                     ),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Image.network(
-                                          'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}'),
-                                      Expanded(
-                                        child: Text(
-                                          data.results![index].originalTitle
-                                              .toString(),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 4,
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          child: Image.network(
+                                            'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}',
+                                            height: 140,
+                                          ),
                                         ),
-                                      )
-                                    ],
+                                        Expanded(
+                                          child: Text(
+                                            data.results![index].originalTitle
+                                                .toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 4,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
                                 ),
                               );
