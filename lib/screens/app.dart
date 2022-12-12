@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/model/model.dart';
 
-
 import 'service.dart';
 
 class app extends StatefulWidget {

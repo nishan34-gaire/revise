@@ -102,12 +102,23 @@ class _myappState extends State<myapp> {
               child: ListView(
                 children: [
                   Form(
-                    child: TextFormField(
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          name = value;
-                        });
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                            filled: true,
+                            hintText: 'search',
+                            fillColor: Colors.white,
+                            hintStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold)),
+                        onFieldSubmitted: (value) {
+                          setState(() {
+                            name = value;
+                          });
+                        },
+                      ),
                     ),
                   ),
                   FutureBuilder(
