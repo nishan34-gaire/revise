@@ -147,7 +147,7 @@ class _myappState extends State<myapp> {
                                   child: Column(
                                     children: [
                                       Image.network(
-                                          'https://i0.wp.com/dailyresearchplot.com/wp-content/uploads/2022/08/Kung-Fu-Panda-4.jpg?fit=1920%2C1080&ssl=1'),
+                                          'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}'),
                                       Expanded(
                                         child: Text(
                                           data.results![index].originalTitle
