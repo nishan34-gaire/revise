@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/model/model.dart';
 
-
-import 'service.dart';
+import '../services/service.dart';
 
 class app extends StatefulWidget {
   final int id;
@@ -37,6 +36,8 @@ Future<Nishan> getpost(int movieId) async {
 }
 
 class _appState extends State<app> {
+  bool select = false;
+
   @override
   initState() {
     data();
@@ -100,7 +101,16 @@ class _appState extends State<app> {
               const SizedBox(
                 width: 2,
               ),
-
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      select = !select;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.favorite,
+                    color: select ? Colors.red : Colors.white,
+                  ))
               // TextField(
               //   decoration: InputDecoration(
               //     counter: Container(
@@ -387,7 +397,9 @@ class _appState extends State<app> {
                         height: 20,
                       ),
                       Container(
-                        color: Colors.brown[400],
+                        decoration: BoxDecoration(
+                          color: Colors.brown[400],
+                        ),
                         height: 50,
                         child: Text(
                           '${nis.tagline}',

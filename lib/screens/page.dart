@@ -27,7 +27,7 @@ class _myappState extends State<myapp> {
     var responce = await client.get(uri);
     var json = responce.body;
     if (responce.statusCode == 200) {
-      print('api responce $json');
+      // print('api responce $json');
       return findFromJson(json);
     } else {
       return findFromJson(json);
@@ -100,14 +100,35 @@ class _myappState extends State<myapp> {
           body: Padding(
               padding: const EdgeInsets.all(8.0),
               child: ListView(
+                //  shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 children: [
                   Form(
-                    child: TextFormField(
-                      onFieldSubmitted: (value) {
-                        setState(() {
-                          name = value;
-                        });
-                      },
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          border: Border.all(
+                            width: 3,
+                            color: Colors.white,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              icon: Icon(Icons.search),
+                              hintText: 'Search Here',
+                              hintStyle: TextStyle(
+                                color: Colors.black,
+                              )),
+                          onFieldSubmitted: (value) {
+                            setState(() {
+                              name = value;
+                            });
+                          },
+                        ),
+                      ),
                     ),
                   ),
                   FutureBuilder(
@@ -116,64 +137,94 @@ class _myappState extends State<myapp> {
                       if (snapshot.hasData) {
                         var data = snapshot.data;
                         print('$data');
-                        return SizedBox(
-                          height: 800,
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            itemCount: data!.results!.length,
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    crossAxisSpacing: 2.0,
-                                    mainAxisSpacing: 2.0),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Card(
-                                elevation: 4,
-                                shadowColor: Colors.red,
-                                color: const Color.fromARGB(255, 48, 14, 2),
-                                child: SizedBox(
-                                  height: 500,
-                                  child: ElevatedButton(
-                                    onPressed: (() {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => app(
-                                                id: data.results![index].id),
-                                          ));
-                                    }),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                        const Color.fromARGB(255, 48, 14, 2),
-                                      ),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          child: Image.network(
-                                            'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}',
-                                            height: 140,
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height - 210,
+                              child: GridView.builder(
+                                // shrinkWrap: true,
+                                // physics: const NeverScrollableScrollPhysics(),
+                                itemCount: data!.results!.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisExtent: 200,
+                                ),
+                                itemBuilder: (BuildContext context, int index) {
+                                  return SizedBox(
+                                    child: Card(
+                                      elevation: 4,
+                                      shadowColor: Colors.red,
+                                      color:
+                                          const Color.fromARGB(255, 48, 14, 2),
+                                      child: SizedBox(
+                                        height: 100,
+                                        child: ElevatedButton(
+                                          onPressed: (() {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => app(
+                                                      id: data
+                                                          .results![index].id),
+                                                ));
+                                          }),
+                                          style: ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                              const Color.fromARGB(
+                                                  255, 48, 14, 2),
+                                            ),
+                                          ),
+                                          child: Column(
+                                            children: [
+                                              SizedBox(
+                                                height: 140,
+                                                child: data.results![index]
+                                                            .posterPath !=
+                                                        null
+                                                    ? Image.network(
+                                                        'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}',
+                                                        height: 140,
+                                                      )
+                                                    : Image.network(
+                                                        fit: BoxFit.fitHeight,
+                                                        'https://th.bing.com/th/id/OIP.AC9frN1qFnn-I2JCycN8fwHaEK?w=321&h=180&c=7&r=0&o=5&pid=1.7'),
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  data.results![index]
+                                                      .originalTitle
+                                                      .toString(),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  maxLines: 2,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                         ),
-                                        Expanded(
-                                          child: Text(
-                                            data.results![index].originalTitle
-                                                .toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 4,
-                                          ),
-                                        )
-                                      ],
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         );
                       } else {
-                        return const Text('No result found');
+                        return const Center(
+                          child: SizedBox(
+                              height: 200,
+                              width: 200,
+                              child: CircularProgressIndicator(
+                                  color: Color.fromARGB(255, 247, 19, 3))),
+                        );
                       }
                     },
                   ),

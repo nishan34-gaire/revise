@@ -23,8 +23,7 @@ class Nishan {
     this.originalTitle,
     this.overview,
     this.popularity,
-    this.posterPath =
-        "https://th.bing.com/th/id/OIP.AC9frN1qFnn-I2JCycN8fwHaEK?w=321&h=180&c=7&r=0&o=5&pid=1.7",
+    this.posterPath,
     this.productionCompanies,
     this.productionCountries,
     this.releaseDate,

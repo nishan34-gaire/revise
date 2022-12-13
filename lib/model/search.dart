@@ -47,7 +47,8 @@ class Result {
     this.originalTitle,
     this.overview,
     this.popularity,
-    this.posterPath,
+    this.posterPath 
+       ,
     this.releaseDate,
     this.title,
     this.video,
