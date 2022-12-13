@@ -297,6 +297,7 @@ class _appState extends State<app> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       )),
+                    
                       Center(
                           child: Text(
                         nis.releaseDate.toString(),
