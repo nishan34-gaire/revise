@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/model/model.dart';
+import 'package:movie/screens/page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/service.dart';
 
@@ -15,6 +17,22 @@ class app extends StatefulWidget {
 data() async {
   nis = await service().getpost();
 }
+
+List<int> nList = [];
+
+//  const stringSharedPreference = "string shared preferences";
+
+//   Future<List<int>> getList() async {
+//   final prefs = await SharedPreferences.getInstance();
+//  return prefs.getStringList(stringSharedPreference) ?? [];
+// }
+//  Future setList( {required String id, required String token}) async {
+//   final prefs = await SharedPreferences.getInstance();
+
+//   prefs.setStringList(stringSharedPreference, [id, token]);
+// }
+
+// const intSharedPreference = "integer shared preferences";
 
 int movieId = 560;
 
@@ -36,6 +54,8 @@ Future<Nishan> getpost(int movieId) async {
 }
 
 class _appState extends State<app> {
+  late String value;
+
   bool select = false;
 
   @override
@@ -52,88 +72,88 @@ class _appState extends State<app> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 48, 14, 2),
-      appBar: AppBar(
-        backgroundColor: Colors.black54,
-        title: const Text(
-          'WorldFree4u',
-          style: TextStyle(
-              color: Colors.orange, fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          Row(
-            children: [
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'HOME',
-                  style: TextStyle(
-                      fontSize: 6,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'TRENDING',
-                  style: TextStyle(
-                      fontSize: 6,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'BROWSE',
-                  style: TextStyle(
-                      fontSize: 6,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(
-                width: 2,
-              ),
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      select = !select;
-                    });
-                  },
-                  icon: Icon(
-                    Icons.favorite,
-                    color: select ? Colors.red : Colors.white,
-                  ))
-              // TextField(
-              //   decoration: InputDecoration(
-              //     counter: Container(
-              //       width: 10,
-              //       height: 10,
-              //       color: Colors.red,
-              //     ),
-              //     icon: Icon(
-              //       Icons.search,
-              //       color: Colors.white,
-              //     ),
-              //     hintText: 'Search for movies or tv show',
-              //     hintStyle: TextStyle(
-              //       color: Colors.white,
-              //     ),
-              //   ),
-              // ),
-            ],
-          )
-        ],
-        leading: IconButton(
-            icon: Icon(typing ? Icons.done : Icons.search), onPressed: () {}),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.black54,
+      //   title: const Text(
+      //     'WorldFree4u',
+      //     style: TextStyle(
+      //         color: Colors.orange, fontSize: 15, fontWeight: FontWeight.bold),
+      //   ),
+      //   actions: [
+      //     Row(
+      //       children: [
+      //         TextButton(
+      //           onPressed: () {},
+      //           child: const Text(
+      //             'HOME',
+      //             style: TextStyle(
+      //                 fontSize: 6,
+      //                 color: Colors.white,
+      //                 fontWeight: FontWeight.bold),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           width: 2,
+      //         ),
+      //         TextButton(
+      //           onPressed: () {},
+      //           child: const Text(
+      //             'TRENDING',
+      //             style: TextStyle(
+      //                 fontSize: 6,
+      //                 color: Colors.white,
+      //                 fontWeight: FontWeight.bold),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           width: 2,
+      //         ),
+      //         TextButton(
+      //           onPressed: () {},
+      //           child: const Text(
+      //             'BROWSE',
+      //             style: TextStyle(
+      //                 fontSize: 6,
+      //                 color: Colors.white,
+      //                 fontWeight: FontWeight.bold),
+      //           ),
+      //         ),
+      //         const SizedBox(
+      //           width: 2,
+      //         ),
+      //         IconButton(
+      //             onPressed: () {
+      //               setState(() {
+      //                 select = !select;
+      //               });
+      //             },
+      //             icon: Icon(
+      //               Icons.favorite,
+      //               color: select ? Colors.red : Colors.white,
+      //             ))
+      //         // TextField(
+      //         //   decoration: InputDecoration(
+      //         //     counter: Container(
+      //         //       width: 10,
+      //         //       height: 10,
+      //         //       color: Colors.red,
+      //         //     ),
+      //         //     icon: Icon(
+      //         //       Icons.search,
+      //         //       color: Colors.white,
+      //         //     ),
+      //         //     hintText: 'Search for movies or tv show',
+      //         //     hintStyle: TextStyle(
+      //         //       color: Colors.white,
+      //         //     ),
+      //         //   ),
+      //         // ),
+      //       ],
+      //     )
+      //   ],
+      //   leading: IconButton(
+      //       icon: Icon(typing ? Icons.done : Icons.search), onPressed: () {}),
+      // ),
       // body: GridView.count(
       //   crossAxisCount: 2,
       //   crossAxisSpacing: 10.0,
@@ -169,6 +189,51 @@ class _appState extends State<app> {
       body: ListView(
         shrinkWrap: true,
         children: [
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => myapp(),
+                        ));
+                  },
+                  icon: const Icon(
+                    Icons.exit_to_app,
+                    size: 40,
+                    color: Colors.red,
+                  )),
+              const SizedBox(
+                width: 250,
+              ),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      // addto();
+                      select = !select;
+
+                      if (select == false) {
+                        print('object');
+                      } else {
+                        Future setInt() async {
+                          final prefs = await SharedPreferences.getInstance();
+                          return prefs.setInt('movieId', widget.id);
+                        }
+                        nList.add(widget.id);
+                      }
+                    });
+                  },
+                  icon: Icon(
+                    Icons.favorite,
+                    size: 40,
+                    color: select ? Colors.red : Colors.white,
+                  )),
+              const SizedBox(
+                height: 40,
+              ),
+            ],
+          ),
           // SizedBox(
           //   height: 200,
           //   child: GridView.builder(
@@ -207,7 +272,7 @@ class _appState extends State<app> {
                 var nis = snapshot.data;
 
                 if (nis != null) {
-                  print('check ${nis.adult.toString()}');
+                  // print('check ${nis.adult.toString()}');
                   // return  SizedBox(
 
                   //   height: 300,
@@ -297,7 +362,6 @@ class _appState extends State<app> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       )),
-                    
                       Center(
                           child: Text(
                         nis.releaseDate.toString(),

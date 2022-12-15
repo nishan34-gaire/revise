@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:movie/model/search.dart';
 import 'package:movie/screens/app.dart';
+import 'package:movie/screens/favourite.dart';
 
 class myapp extends StatefulWidget {
   @override
@@ -66,9 +67,15 @@ class _myappState extends State<myapp> {
                     width: 2,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => wish(),
+                          ));
+                    },
                     child: const Text(
-                      'TRENDING',
+                      'Wishlist',
                       style: TextStyle(
                           fontSize: 6,
                           color: Colors.white,
@@ -136,7 +143,7 @@ class _myappState extends State<myapp> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         var data = snapshot.data;
-                        print('$data');
+                       
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
