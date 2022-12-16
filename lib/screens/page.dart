@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:movie/model/search.dart';
-import 'package:movie/screens/app.dart';
+import 'package:movie/model/latest.dart';
 import 'package:movie/screens/favourite.dart';
+import 'package:movie/screens/trending.dart';
 
 class myapp extends StatefulWidget {
   @override
@@ -11,27 +11,19 @@ class myapp extends StatefulWidget {
 
 class _myappState extends State<myapp> {
   @override
-  initState() {
-    search(name);
-
-    // getpost(movieId);
-    super
-        .initState(); //  this is the material super constructor for init state to link your instance initState to the global initState context
-  }
-
-  String name = 'wakanda';
-  Future<Find> search(String name) async {
+  Latest les = Latest();
+  Future<Latest> lates() async {
     var client = http.Client();
     var uri = Uri.parse(
-        'https://api.themoviedb.org/3/search/movie?api_key=8be08cce18954a0aecc4f2c57f7d992b&language=en-US&query=$name&page=1&include_adult=false');
+        'https://api.themoviedb.org/3/movie/latest?api_key=8be08cce18954a0aecc4f2c57f7d992b&language=en-US');
 
     var responce = await client.get(uri);
     var json = responce.body;
     if (responce.statusCode == 200) {
-      // print('api responce $json');
-      return findFromJson(json);
+      print('api responce $json');
+      return latestFromJson(json);
     } else {
-      return findFromJson(json);
+      return latestFromJson(json);
     }
   }
 
@@ -101,142 +93,219 @@ class _myappState extends State<myapp> {
                 ],
               )
             ],
-            leading:
-                IconButton(icon: const Icon(Icons.search), onPressed: () {}),
+            leading: IconButton(
+                icon: const Icon(Icons.search),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => first(),
+                      ));
+                }),
           ),
-          body: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: ListView(
-                //  shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: [
-                  Form(
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(
-                            width: 3,
-                            color: Colors.white,
-                          ),
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                              icon: Icon(Icons.search),
-                              hintText: 'Search Here',
-                              hintStyle: TextStyle(
-                                color: Colors.black,
-                              )),
-                          onFieldSubmitted: (value) {
-                            setState(() {
-                              name = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  FutureBuilder(
-                    future: search(name),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        var data = snapshot.data;
-                       
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height - 210,
-                              child: GridView.builder(
-                                // shrinkWrap: true,
-                                // physics: const NeverScrollableScrollPhysics(),
-                                itemCount: data!.results!.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  mainAxisExtent: 200,
+          body: Column(
+            children: [
+              FutureBuilder<Latest>(
+                // future:lates(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    var les = snapshot.data;
+
+                    if (les != null) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              height: 250,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                color: const Color(0xff7c94b6),
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      'https://image.tmdb.org/t/p/w600_and_h900_bestv2${les.backdropPath}'),
+                                  fit: BoxFit.fill,
                                 ),
-                                itemBuilder: (BuildContext context, int index) {
-                                  return SizedBox(
-                                    child: Card(
-                                      elevation: 4,
-                                      shadowColor: Colors.red,
-                                      color:
-                                          const Color.fromARGB(255, 48, 14, 2),
-                                      child: SizedBox(
-                                        height: 100,
-                                        child: ElevatedButton(
-                                          onPressed: (() {
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) => app(
-                                                      id: data
-                                                          .results![index].id),
-                                                ));
-                                          }),
-                                          style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                              const Color.fromARGB(
-                                                  255, 48, 14, 2),
-                                            ),
-                                          ),
-                                          child: Column(
-                                            children: [
-                                              SizedBox(
-                                                height: 140,
-                                                child: data.results![index]
-                                                            .posterPath !=
-                                                        null
-                                                    ? Image.network(
-                                                        'https://image.tmdb.org/t/p/w600_and_h900_bestv2${data.results![index].posterPath}',
-                                                        height: 140,
-                                                      )
-                                                    : Image.network(
-                                                        fit: BoxFit.fitHeight,
-                                                        'https://th.bing.com/th/id/OIP.AC9frN1qFnn-I2JCycN8fwHaEK?w=321&h=180&c=7&r=0&o=5&pid=1.7'),
-                                              ),
-                                              Expanded(
-                                                child: Text(
-                                                  data.results![index]
-                                                      .originalTitle
-                                                      .toString(),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 2,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
+                                border:
+                                    Border.all(width: 3, color: Colors.orange),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(20.0),
+                                    child: Container(
+                                      height: 150,
+                                      width: 120,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 3, color: Colors.orange),
+                                        borderRadius: BorderRadius.circular(20),
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                "https://image.tmdb.org/t/p/w600_and_h900_bestv2${les.posterPath}"),
+                                            fit: BoxFit.fill),
                                       ),
                                     ),
-                                  );
-                                },
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        );
-                      } else {
-                        return const Center(
-                          child: SizedBox(
-                              height: 200,
-                              width: 200,
-                              child: CircularProgressIndicator(
-                                  color: Color.fromARGB(255, 247, 19, 3))),
-                        );
-                      }
-                    },
-                  ),
-                ],
-              )),
+                          ),
+                          Center(
+                              child: Text(
+                            les.title.toString(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          )),
+                          Center(
+                              child: Text(
+                            les.releaseDate.toString(),
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          )),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'rating: ${les.voteAverage.toString()}',
+                                style: const TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                              const SizedBox(
+                                width: 40,
+                              ),
+                              Container(
+                                height: 40,
+                                width: 2,
+                                decoration: BoxDecoration(
+                                  color: Colors.black,
+                                  border:
+                                      Border.all(width: 3, color: Colors.black),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Container(
+                                child: Row(
+                                  children: const [
+                                    Icon(
+                                      Icons.play_arrow,
+                                      color: Colors.white,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      'Play Trailer',
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 30,
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width,
+                            color: Colors.brown[900],
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  les.releaseDate.toString(),
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                  height: 40,
+                                  child: ListView.separated(
+                                    separatorBuilder: (context, index) {
+                                      return const VerticalDivider(
+                                        color: Colors.white,
+                                      );
+                                    },
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: les.genres?.length ?? 1,
+                                    itemBuilder: (context, index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          les.genres?[index].name.toString() ??
+                                              'no genere found',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.brown[400],
+                            ),
+                            height: 50,
+                            child: Text(
+                              '${les.tagline}',
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 4,
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontFamily: 'Roboto',
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          const Text(
+                            'Overeview',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Text(
+                            les.overview.toString(),
+                            style: const TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      );
+                    }
+                  }
+
+                  return const CircularProgressIndicator();
+                },
+              )
+            ],
+          ),
         ));
   }
 }

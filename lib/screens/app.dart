@@ -18,7 +18,15 @@ data() async {
   nis = await service().getpost();
 }
 
-List<int> nList = [];
+
+datagg(String id) async {
+  List<String> strList = [];
+  strList.add(id);
+  print(id);
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  prefs.setStringList("productList", strList);
+
+}
 
 //  const stringSharedPreference = "string shared preferences";
 
@@ -214,13 +222,15 @@ class _appState extends State<app> {
                       select = !select;
 
                       if (select == false) {
-                        print('object');
                       } else {
-                        Future setInt() async {
-                          final prefs = await SharedPreferences.getInstance();
-                          return prefs.setInt('movieId', widget.id);
-                        }
-                        nList.add(widget.id);
+                        // Future setInt() async {
+                        //   final prefs = await SharedPreferences.getInstance();
+                        //   return prefs.setInt('movieId', widget.id);
+                        // }
+
+                        // nList.add(widget.id);
+
+                        datagg(widget.id.toString());
                       }
                     });
                   },
